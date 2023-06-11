@@ -1,0 +1,40 @@
+
+<div class="container">
+    <h1>Son Verilen Ödevler </h1>
+    <hr>
+    <mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="odev">
+            <mat-header-cell *matHeaderCellDef> Ödev
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.odevBilgi.odevAdi}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="ders">
+            <mat-header-cell *matHeaderCellDef> Ders
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.odevBilgi.dersAdi}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="ogr">
+            <mat-header-cell *matHeaderCellDef> Öğrenci
+            </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.ogrBilgi.ogrenciAdiSoyadi}} </mat-cell>
+        </ng-container>
+    
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- <tr *ngFor="let kayit of kayitlar">
+    <td>{{kayit.odevBilgi.odevAdi}}</td>
+    <td>{{kayit.odevBilgi.dersAdi}}</td>
+    <td>{{kayit.ogrBilgi.ogrenciAdiSoyadi}}</td>
+</tr> -->

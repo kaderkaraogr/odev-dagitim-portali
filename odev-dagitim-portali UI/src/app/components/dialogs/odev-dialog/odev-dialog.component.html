@@ -1,0 +1,31 @@
+<div mat-dialog-content>
+  <mat-toolbar  color="primary">
+    <span>{{dialogBaslik}}</span>
+  </mat-toolbar>
+  <div class="container">
+    <form [formGroup]="frm">
+      <mat-form-field appearance="outline">
+        <mat-label>Ödev Adı</mat-label>
+          <input matInput placeholder="Ödev Adı" formControlName="odevAdi" name="odevAdi" required="" type="text">
+        </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Ödev Özeti</mat-label>
+          <textarea matInput placeholder="Ödev Özeti" formControlName="odevOzet" name="odevOzet" required=""></textarea>
+        </mat-form-field>
+
+      <mat-form-field appearance="outline" *ngIf="!dersIdVar">
+        <mat-label>Ders</mat-label>
+        <mat-select placeholder="Ders" formControlName="odevDersId" required>
+          <mat-option *ngFor="let ders of dersler" [value]="ders.dersId" >{{ders.dersAdi}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
+</div>
+<pre>
+</pre>
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="dialogRef.close(frm.value)" [disabled]="frm.invalid" >Kaydet</button>&nbsp;
+  <button mat-raised-button color="warn"     (click)="dialogRef.close(false)">İptal</button>&nbsp;
+  <!-- <button mat-raised-button color="warn" (click)="dialogRef.close(false)">İptal</button> -->
+</mat-dialog-actions>

@@ -1,0 +1,76 @@
+<div class="container">
+  <h1 *ngIf="!katIdVar">Dersler</h1>
+  <h1 *ngIf="katIdVar">{{secKat.kategoriAdi}} Dersleri</h1>
+
+  <mat-card class="detail-card" *ngIf="katIdVar">
+    <mat-card-header>
+      <mat-card-title>Seçili Kategori : {{secKat.kategoriAdi}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+    </mat-card-content>
+  </mat-card>
+  
+  <div>
+    <mat-form-field appearance="outline">
+      <mat-label>Arama Yapın</mat-label>
+      <input matInput placeholder="Ara..." (keyup)="filtrele($event)">
+    </mat-form-field>&nbsp;&nbsp;&nbsp;
+  
+  
+    <mat-form-field appearance="outline" *ngIf="!katIdVar">
+      <mat-label>Kategoriler</mat-label>
+      <mat-select placeholder="Kategoriler"  (valueChange)="dersFiltrele($event)" >
+        <mat-option [value]="0">Hepsi</mat-option>
+        <mat-option *ngFor="let kat of kategoriler" [value]="kat.kategoriId" >{{kat.kategoriAdi}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  
+
+
+  <button mat-fab style="margin-bottom: 20px;" color="primary" matTooltip="Ders Ekle" (click)="DersEkle()" *ngIf="apiServis.yetkiKontrol(['Ogretmen'])">
+    <mat-icon aria-label="label">add</mat-icon>
+  </button>
+  <mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="dersId">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Ders Id</mat-header-cell>
+      <mat-cell *matCellDef="let kayit"> {{kayit.dersId}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="dersAdi">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Ders Adı</mat-header-cell>
+      <mat-cell *matCellDef="let kayit"> {{kayit.dersAdi}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="dersKredi">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Ders Kredisi</mat-header-cell>
+      <mat-cell *matCellDef="let kayit"> {{kayit.dersKredi}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="katAdi">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Ders Kategorisi</mat-header-cell>
+      <mat-cell *matCellDef="let kayit"> {{kayit.katAdi}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="dersOdevSayisi">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Ders Odev Sayısı</mat-header-cell>
+      <mat-cell *matCellDef="let kayit">
+        <span>{{kayit.dersOdevSayisi}}</span>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="islemler">
+      <mat-header-cell *matHeaderCellDef>İşlemler</mat-header-cell>
+      <mat-cell *matCellDef="let kayit" >
+        <button mat-icon-button color="primary" matTooltip="Ödevler" [routerLink]="['/ders-odev/',kayit.dersId]">
+          <mat-icon aria-label="label">article</mat-icon>
+        </button>
+        <button mat-icon-button color="primary" matTooltip="Ders Düzenle" (click)="DersDuzenle(kayit)" *ngIf="apiServis.yetkiKontrol(['Ogretmen'])">
+          <mat-icon aria-label="label">edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" matTooltip="Ders Sil" (click)="DersSil(kayit)" *ngIf="apiServis.yetkiKontrol(['Ogretmen'])">
+          <mat-icon aria-label="label">delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+    
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[3,7,20]" showFirstLastButtons></mat-paginator>
+</div>

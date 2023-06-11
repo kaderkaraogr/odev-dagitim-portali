@@ -1,0 +1,55 @@
+<div class="container">
+
+  <mat-card class="detail-card" *ngIf="secOdev">
+    <mat-card-header>
+      <mat-card-title>Ödev Adı : {{secOdev.odevAdi}}</mat-card-title>
+      <mat-card-subtitle>Ödevin Öğrenci Sayısı : {{secOdev.odevOgrenciSayisi}}</mat-card-subtitle>
+      <mat-card-subtitle>Ödevin Dersi : {{secOdev.dersAdi}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Özet : {{secOdev.odevOzet}}</p>
+    </mat-card-content>
+  </mat-card>
+
+
+  <div>
+  </div>
+
+
+
+  <button mat-fab style="margin-bottom: 20px;" color="primary" matTooltip="Ders Ekle" (click)="KayitEkle()" *ngIf="apiServis.yetkiKontrol(['Ogretmen'])">
+    <mat-icon aria-label="label">add</mat-icon>
+  </button>
+  <mat-table [dataSource]="dataSource" matSort>
+
+
+    <ng-container matColumnDef="kayitId">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Kayıt Id</mat-header-cell>
+      <mat-cell *matCellDef="let kayit"> {{kayit.kayitId}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="ogrBilgi">
+      <mat-header-cell *matHeaderCellDef>Öğrenci Adı</mat-header-cell>
+      <mat-cell *matCellDef="let kayit"> {{kayit.ogrBilgi?.ogrenciAdiSoyadi}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="odevOzet">
+      <mat-header-cell *matHeaderCellDef>Ödev Özeti</mat-header-cell>
+      <mat-cell *matCellDef="let kayit"> {{kayit.odevBilgi?.odevOzet}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="islemler">
+      <mat-header-cell *matHeaderCellDef>İşlemler</mat-header-cell>
+      <mat-cell *matCellDef="let kayit">
+        <button mat-icon-button color="primary" matTooltip="Kayıt Düzenle" (click)="KayitDuzenle(kayit)" *ngIf="apiServis.yetkiKontrol(['Ogretmen'])">
+          <mat-icon aria-label="label">edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" matTooltip="Kayıt Sil" (click)="KayitSil(kayit)" *ngIf="apiServis.yetkiKontrol(['Ogretmen'])">
+          <mat-icon aria-label="label">delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <mat-paginator [pageSizeOptions]="[3,7,20]" showFirstLastButtons></mat-paginator>
+</div>

@@ -1,0 +1,54 @@
+<mat-toolbar color="primary">
+  <span>{{dialogBaslik}}</span>
+</mat-toolbar>
+
+<div mat-dialog-content *ngIf="odevIdVar || ogrIdVar">
+  <div class="container">
+    <form [formGroup]="frm">
+      <mat-form-field *ngIf="odevIdVar == true">
+        <mat-label>Öğrenciler</mat-label>
+        <mat-select formControlName="ogrId" >
+          <mat-option *ngFor="let ogr of ogrenciler" [value]="ogr.ogrenciId">{{ogr.ogrenciAdiSoyadi}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="ogrIdVar == true">
+        <mat-label>Ödevler</mat-label>
+        <mat-select formControlName="odevId" >
+          <mat-option *ngFor="let odev of odevler" [value]="odev.odevId">{{odev.odevAdi}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
+</div>
+
+
+
+<div mat-dialog-content *ngIf="!odevIdVar && !ogrIdVar">
+  <div class="container">
+    <form [formGroup]="frm">
+      <mat-form-field>
+        <mat-label>Öğrenciler</mat-label>
+        <mat-select formControlName="ogrId" >
+          <mat-option *ngFor="let ogr of ogrenciler" [value]="ogr.ogrenciId">{{ogr.ogrenciAdiSoyadi}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Ödevler</mat-label>
+        <mat-select formControlName="odevId" >
+          <mat-option *ngFor="let odev of odevler" [value]="odev.odevId">{{odev.odevAdi}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+  </div>
+</div>
+
+
+<pre>
+</pre>
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="dialogRef.close(frm.value)"
+    [disabled]="frm.invalid">Kaydet</button>&nbsp;
+  <button mat-raised-button color="warn" (click)="dialogRef.close(undefined)">İptal</button>&nbsp;
+</mat-dialog-actions>

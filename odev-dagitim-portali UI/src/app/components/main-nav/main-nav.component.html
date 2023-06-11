@@ -1,0 +1,49 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+    <mat-toolbar style="background-color: #3f51b5; color: white;">Öğrenciler</mat-toolbar>
+    <mat-nav-list *ngIf="apiServis.OturumKontrol()">
+      <a mat-list-item *ngFor="let ogr of ogrenciler" [href]="'/ogr-kayit/' + ogr.ogrenciId">{{ogr.ogrenciAdiSoyadi}} ({{ogr.ogrenciOdevSayisi}})</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="mat-elevation-z8">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span [routerLink]="['/']" style="cursor: pointer;">Ödev Dağıtım Portalı</span>
+
+      <div>
+        <button mat-button color="basic" class="mrg-btn" *ngIf="apiServis.OturumKontrol()" [routerLink]="['/ders']">Dersler</button>
+        <button mat-button color="basic" class="mrg-btn" *ngIf="apiServis.OturumKontrol()" [routerLink]="['/odev']">Ödevler</button>
+        <button mat-button color="basic" class="mrg-btn" *ngIf="apiServis.OturumKontrol()" [routerLink]="['/ogrenci']">Öğrenciler</button>
+        <button mat-button color="basic" class="mrg-btn" *ngIf="apiServis.OturumKontrol()" [routerLink]="['/odev-kayit']">Kayıtlar</button>
+
+
+
+        <button mat-button color="basic" class="mrg-btn" *ngIf="!apiServis.OturumKontrol()" [routerLink]="['/login']">Oturum Aç</button>
+        <button mat-button color="basic" class="mrg-btn" *ngIf="apiServis.OturumKontrol()" >{{kadi}}</button>
+        <button mat-raised-button color="warn" class="mrg-btn" *ngIf="apiServis.OturumKontrol()" (click)="OturumKapat()">Oturum Kapat</button>
+
+
+        <button mat-button [matMenuTriggerFor]="menu" *ngIf="apiServis.yetkiKontrol(['Admin'])">
+          <mat-icon>admin_panel_settings</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item [routerLink]="['/admin/kategori']">Kategoriler</button>
+          <button mat-menu-item [routerLink]="['/admin/uye']">Üyeler</button>
+        </mat-menu>
+
+      </div>
+
+
+      
+    </mat-toolbar>
+    <!-- Add Content Here -->
+    <router-outlet></router-outlet>
+    
+  </mat-sidenav-content>
+</mat-sidenav-container>
